@@ -1,5 +1,65 @@
 // Mixins and other abstracts definition (ex. variables) from
 // styles/abstracts/ will be included in any sass files
 
-.redButton
-  +button($red)
+.app
+  min-height: 100%
+  min-height: 100vh
+  height: 100%
+
+  .profileHeader
+    color: #333
+    background: #fbf0f0
+    border-bottom: 1px solid #dbd6d6
+    padding: 20px
+    width: 100%
+
+    .userImage
+      margin-top: -10px
+      margin-right: 10px
+      float: left
+      border-radius: 45px
+
+    .userName
+      font-size: 25px
+      font-weight: bold
+
+  .player
+    position: fixed
+    left: 0
+    bottom: 0
+    height: 100px
+    width: 100%
+    padding: 20px
+    background: #fbf0f0
+    border-top: 1px solid #dbd6d6
+
+
+  .musicContainer
+    background: #faf4f4
+    margin-left: 150px
+    margin-right: 150px
+    padding: 10px
+    max-height: 70vh
+
+    .playlistGridContainer
+      text-align: center
+      padding-bottom: 150px
+
+    .playlistTile
+      height: 250px
+      width: 250px
+      border: 1px solid black
+      margin: 5px
+      padding: 5px
+      display: inline-block
+      text-align: left
+
+    .songList
+      margin: 20px
+
+      .songListItem
+        border: 2px solid #dfdfdf
+        border-top: 1px solid #dfdfdf
+        border-bottom: 1px solid #dfdfdf
+        width: 100%
+        padding: 10px

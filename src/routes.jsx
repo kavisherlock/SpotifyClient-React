@@ -8,7 +8,7 @@ import App from './app';
 const Routes = () => (
   <Router>
     <div>
-      <Route exact path="/" component={App}/>
+      <Route path="/" component={App}/>
     </div>
   </Router>
 );

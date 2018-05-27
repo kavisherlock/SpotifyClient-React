@@ -1,35 +1,50 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import PlaylistTile from './PlaylistTile';
+import { connect } from 'react-redux';
 
 import styles from "../app.sass"
 
-const PlaylistGrid = () => {
+const propTypes = {
+  loadingPlaylists: PropTypes.bool,
+  playlists: PropTypes.array,
+}
+
+const PlaylistGrid = (props) => {
+  const {
+    loadingPlaylists,
+    playlists,
+  } = props;
+
+  if (loadingPlaylists || !playlists) {
+    return <div>Loading playlists...</div>;
+  }
+
+  let playlistComponents = [];
+  for (let i = 0; i < playlists.length; i++) {
+    playlistComponents.push(
+      <PlaylistTile
+        key={i}
+        name={playlists[i].name}
+        imageUrl={playlists[i].images[0].url}
+      />
+    );
+  }
+
   return(
     <div className={styles.playlistGridContainer}>
       <div className={styles.playlistGrid}>
-        <PlaylistTile />
-        <PlaylistTile />
-        <PlaylistTile />
-        <PlaylistTile />
-        <PlaylistTile />
-        <PlaylistTile />
-        <PlaylistTile />
-        <PlaylistTile />
-        <PlaylistTile />
-        <PlaylistTile />
-        <PlaylistTile />
-        <PlaylistTile />
-        <PlaylistTile />
-        <PlaylistTile />
-        <PlaylistTile />
-        <PlaylistTile />
-        <PlaylistTile />
-        <PlaylistTile />
-        <PlaylistTile />
-        <PlaylistTile />
+        {playlistComponents}
       </div>
     </div>
   );
 };
 
-export default PlaylistGrid;
+PlaylistGrid.propTypes = propTypes;
+
+const mapStateToProps = state => ({
+  loadingPlaylists: state.loadingPlaylists,
+  playlists: state.playlists,
+});
+
+export default connect(mapStateToProps)(PlaylistGrid);

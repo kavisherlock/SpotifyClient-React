@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 import styles from "../app.sass"
 
@@ -41,4 +42,9 @@ const Profile = (props) => {
 Profile.propTypes = propTypes;
 Profile.defaultProps = defaultProps;
 
-export default Profile;
+const mapStateToProps = state => ({
+  name: state.userData.display_name,
+  imageUrl: state.userData.images[0].url
+});
+
+export default connect(mapStateToProps)(Profile);

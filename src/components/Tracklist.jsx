@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-
+import MdArrowBack from 'react-icons/lib/md/arrow-back';
+import Button from './Button';
 import { backToPlaylists } from '../redux/actions';
 
 import TracklistItem from './TracklistItem'
@@ -22,16 +23,42 @@ const Tracklist = (props) => {
     _backToPlaylists,
   } = props;
 
+  const backButton = (
+    <div className={styles.backButton}>
+      <Button
+        width={56}
+        height={24}
+        icon={<MdArrowBack size={14}/>}
+        text="Back"
+        handleButtonClick={() => _backToPlaylists()}
+      />
+    </div>
+  );
+
   if (loadingPlaylistTracks || !tracks) {
-    return <div>Loading tracks...</div>;
+    return (
+      <div>
+        Loading tracks...
+        {backButton}
+      </div>
+    );
   }
 
   let songComponents = [];
   for (let i = 0; i < tracks.length; i++) {
+    let artists = tracks[i].track.artists[0].name;
+    for (let j = 1; j < tracks[i].track.artists.length; j++) {
+      artists = `${artists}, ${tracks[i].track.artists[j].name}`
+    }
+
     songComponents.push(
       <TracklistItem
         key={i}
-        name={tracks[i].track.name}
+        index={i + 1}
+        trackName={tracks[i].track.name}
+        artistName={artists}
+        albumName={tracks[i].track.album.name}
+        previewUrl={tracks[i].track.preview_url}
       />
     );
   }
@@ -40,9 +67,7 @@ const Tracklist = (props) => {
     <div className={styles.tracklist}>
       <div className={styles.tracklistTitle}>
         {playlistName}
-        <div className={styles.backButton} onClick={() => _backToPlaylists()}>
-          {"<- Back"}
-        </div>
+        {backButton}
       </div>
       {songComponents}
     </div>

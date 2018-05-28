@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-
-import { loadPlaylistTracks } from '../redux/actions';
+import MdPlaylistPlay from 'react-icons/lib/md/playlist-play';
+import MdPlayArrow from 'react-icons/lib/md/play-arrow';
+import Button from './Button';
+import { loadPlaylistTracks, playPlaylistTracks } from '../redux/actions';
 
 import styles from "../app.sass";
 
@@ -13,6 +15,7 @@ const propTypes = {
   name: PropTypes.string,
   imageUrl: PropTypes.string,
   _loadPlaylistTracks: PropTypes.func,
+  _playPlaylistTracks: PropTypes.func,
 };
 
 class PlaylistTile extends React.Component {
@@ -39,10 +42,11 @@ class PlaylistTile extends React.Component {
     const {
       name,
       imageUrl,
-      _loadPlaylistTracks,
       accessToken,
       userId,
       playlistId,
+      _loadPlaylistTracks,
+      _playPlaylistTracks,
     } = this.props;
 
     let tileOverlay = null;
@@ -53,13 +57,14 @@ class PlaylistTile extends React.Component {
         <div className={styles.tileOverlay}>
           <div className={styles.tileTitle}>{name}</div>
           <div className={styles.tileButtons}>
-            <div
-              className={styles.tileButton}
-              onClick={() => _loadPlaylistTracks(accessToken, userId, playlistId, name)}
-            >
-              Open
-            </div>
-            <div className={styles.tileButton}>Play</div>
+            <Button
+              icon={<MdPlaylistPlay size={32} style={{ paddingTop: '3px' }} />}
+              handleButtonClick={() => _loadPlaylistTracks(accessToken, userId, playlistId, name)}
+            />
+            <Button
+              icon={<MdPlayArrow size={32} />}
+              handleButtonClick={() => _playPlaylistTracks(accessToken, userId, playlistId)}
+            />
           </div>
         </div>
       );
@@ -68,8 +73,8 @@ class PlaylistTile extends React.Component {
     return (
       <div
         className={styles.playlistTile}
-        onMouseEnter={this.handleHover}
-        onMouseLeave={this.handleHoverEnd}
+        onMouseOver={() => this.setState({ hovering: true })}
+        onMouseLeave={() => this.setState({ hovering: false })}
       >
         <div>
           <img
@@ -94,6 +99,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   _loadPlaylistTracks: (accessToken, userId, playlistId, name) => { dispatch(loadPlaylistTracks(accessToken, userId, playlistId, name)); },
+  _playPlaylistTracks: (accessToken, userId, playlistId) => { dispatch(playPlaylistTracks(accessToken, userId, playlistId)) }
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PlaylistTile);

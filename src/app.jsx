@@ -16,7 +16,7 @@ import styles from "./app.sass"  // Css-module styles
 const client_id = 'a7a7cf84fb924dfc9c4240e081d05ddc'; // Your client id
 const redirect_uri = 'http://localhost:8888/callback'; // Your redirect uri
 const stateKey = 'spotify_auth_state';
-const scope = 'user-read-private user-read-email user-modify-playback-state';
+const scope = 'streaming user-read-private user-read-email user-modify-playback-state';
 
 /**
  * Generates a random string containing numbers and letters

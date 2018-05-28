@@ -32,29 +32,30 @@
     bottom: 0
     height: 100px
     width: 100%
-    padding: 20px
     background: #fbf0f0
-    border-top: 1px solid #dbd6d6
-
+    padding: 1%
+    border-top: 2px solid #cbc6c6
 
   .musicContainer
-    background: #faf4f4
+    background: #faf6f6
     margin-left: 150px
     margin-right: 150px
+    margin-bottom: 100px
     padding: 10px
-    max-height: 70vh
 
     .playlistGridContainer
       text-align: center
-      padding-bottom: 150px
+      padding-bottom: 30px
 
     .playlistTile
       position: relative
-      border: 0.2px solid #cdcdcd
-      margin: 5px
-      padding: 5px
+      padding: 8px
       display: inline-block
       text-align: left
+      background: #f4f0f0
+
+      img
+        border: 2px solid #bab4b4
 
       .transparentImage
         opacity: 0.2
@@ -84,40 +85,57 @@
           align-items: center
           font-size: 13px
 
-          .tileButton
-            display: flex
-            justify-content: center
-            align-items: center
-            margin: 20px
-            width: 50px
-            height: 50px
-            background: #dbd0d0
-            border-radius: 50px
-            border: 2px solid #bbb0b0
-            &:hover
-              background: #fbf0f0
-              cursor: pointer
-
     .tracklist
       margin: 20px
 
       .tracklistTitle
         font-size: 20px
         font-weight: bold
-        padding-bottom: 10px
-
-        .backButton
-          font-size: 12px
-          float: right
-          background: #ebe0e0
-          border: 2px solid #bbb0b0
-          border-radius: 10px
-          padding: 5px
-          &:hover
-            background: #fbf0f0
-            cursor: pointer
 
       .tracklistItem
+        color: #666
+        display: flex
+        flex-direction: row
+        align-items: center
         border-bottom: 2px solid #dfdfdf
-        width: 100%
+        width: 98%
         padding: 10px
+        &:hover
+          background: #f2ecec
+          cursor: default
+
+        .playButton:hover
+          cursor: pointer
+
+        .trackInfo
+          display: flex
+          flex-direction: row
+          width: 100%
+          margin-left: 20px
+
+          div
+            display: flex
+            flex-direction: column
+            justify-content: center
+            padding: 0 1%
+
+    .circleButton
+      font-size: 12px
+      display: flex
+      justify-content: space-around
+      align-items: center
+      background: #dbd0d0
+      border-radius: 50px
+      border: 2px solid #bbb0b0
+      &:hover
+        background: #fbf0f0
+        cursor: pointer
+
+    .backButton
+      font-size: 12px
+      font-weight: bold
+      float: right
+      margin-top: -25px
+      margin-right: -1%
+      .circleButton
+        padding: 0 5px

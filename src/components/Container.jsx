@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import PlaylistGrid from './PlaylistGrid';
-// import SongList from './SongList';
+import Tracklist from './Tracklist';
 
 import { loadPlaylists } from '../redux/actions';
 
@@ -11,6 +11,7 @@ import styles from "../app.sass"
 
 const propTypes = {
   accessToken: PropTypes.string,
+  currentView: PropTypes.string,
   _loadPlaylists: PropTypes.func,
 };
 
@@ -20,9 +21,16 @@ class Container extends React.Component {
   }
 
   render() {
+    let viewer = null;
+    if (this.props.currentView === 'PLAYLISTS') {
+      viewer = <PlaylistGrid />;
+    } else if (this.props.currentView === 'TRACKS') {
+      viewer = <Tracklist />;
+    }
+
     return (
       <div className={styles.musicContainer}>
-        <PlaylistGrid />
+        {viewer}
       </div>
     );
   }
@@ -32,7 +40,7 @@ Container.propTypes = propTypes;
 
 const mapStateToProps = state => ({
   accessToken: state.accessToken,
-  playlists: state.playlists,
+  currentView: state.currentView,
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import PlaylistTile from './PlaylistTile';
 import { connect } from 'react-redux';
 
+import PlaylistTile from './PlaylistTile';
 import styles from "../app.sass"
 
 const propTypes = {
@@ -25,6 +25,7 @@ const PlaylistGrid = (props) => {
     playlistComponents.push(
       <PlaylistTile
         key={i}
+        playlistId={playlists[i].id}
         name={playlists[i].name}
         imageUrl={playlists[i].images[0].url}
       />

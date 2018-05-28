@@ -5,7 +5,8 @@
   min-height: 100%
   min-height: 100vh
   height: 100%
-  font-family: monospace, sans-serif
+  font-family: Verdana, sans-serif
+  color: #444
 
   .profileHeader
     color: #333
@@ -48,19 +49,75 @@
       padding-bottom: 150px
 
     .playlistTile
-      width: 250px
+      position: relative
       border: 0.2px solid #cdcdcd
       margin: 5px
       padding: 5px
       display: inline-block
       text-align: left
 
-    .songList
+      .transparentImage
+        opacity: 0.2
+
+      .tileOverlay
+        top: 0
+        left: 0
+        display: flex
+        flex-direction: column
+        justify-content: center
+        align-items: center
+        text-align: center
+        width: 250px
+        height: 250px
+        padding: 10px
+        position: absolute
+
+        .tileTitle
+          font-size: 20px
+          font-weight: bolder
+          margin-bottom: 20px
+
+        .tileButtons
+          display: flex
+          flex-direction: row
+          justify-content: center
+          align-items: center
+          font-size: 13px
+
+          .tileButton
+            display: flex
+            justify-content: center
+            align-items: center
+            margin: 20px
+            width: 50px
+            height: 50px
+            background: #dbd0d0
+            border-radius: 50px
+            border: 2px solid #bbb0b0
+            &:hover
+              background: #fbf0f0
+              cursor: pointer
+
+    .tracklist
       margin: 20px
 
-      .songListItem
-        border: 2px solid #dfdfdf
-        border-top: 1px solid #dfdfdf
-        border-bottom: 1px solid #dfdfdf
+      .tracklistTitle
+        font-size: 20px
+        font-weight: bold
+        padding-bottom: 10px
+
+        .backButton
+          font-size: 12px
+          float: right
+          background: #ebe0e0
+          border: 2px solid #bbb0b0
+          border-radius: 10px
+          padding: 5px
+          &:hover
+            background: #fbf0f0
+            cursor: pointer
+
+      .tracklistItem
+        border-bottom: 2px solid #dfdfdf
         width: 100%
         padding: 10px

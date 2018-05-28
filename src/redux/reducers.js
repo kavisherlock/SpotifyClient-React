@@ -5,6 +5,10 @@ import {
   LOAD_PLAYLISTS,
   LOAD_PLAYLISTS_SUCCESS,
   LOAD_PLAYLISTS_FAILURE,
+  LOAD_PLAYLIST_TRACKS,
+  LOAD_PLAYLIST_TRACKS_SUCCESS,
+  LOAD_PLAYLIST_TRACKS_FAILURE,
+  BACK_TO_PLAYLISTS,
 } from './actions';
 
 const defaultState = {
@@ -17,6 +21,10 @@ const defaultState = {
   loadingPlaylists: false,
   playlists: [],
   playlistsError: null,
+  loadingPlaylistTracks: false,
+  currentPlaylistName: '',
+  tracks: [],
+  tracksError: null,
 }
 
 const Reducers = (state = defaultState, action) => {
@@ -24,14 +32,14 @@ const Reducers = (state = defaultState, action) => {
 
   switch (action.type) {
     case LOGIN_USER:
+      newState.accessToken = action.data.accessToken;
       newState.loggingIn = true;
-      newState.userLoginError = '';
-      return state;
+      newState.userLoginError = null;
+      return newState;
 
     case LOGIN_USER_SUCCESS:
       newState.loggingIn = false;
       newState.loggedIn = true;
-      newState.accessToken = action.data.accessToken;
       newState.userData = action.data.userData;
       return newState;
 
@@ -42,8 +50,8 @@ const Reducers = (state = defaultState, action) => {
 
     case LOAD_PLAYLISTS:
       newState.loadingPlaylists = true;
-      newState.playlistsError = '';
-      return state;
+      newState.playlistsError = null;
+      return newState;
 
     case LOAD_PLAYLISTS_SUCCESS:
       newState.loadingPlaylists = false;
@@ -53,6 +61,27 @@ const Reducers = (state = defaultState, action) => {
     case LOAD_PLAYLISTS_FAILURE:
       newState.loadingPlaylists = false;
       newState.playlistsError = action.data.playlistsError;
+      return newState;
+
+    case LOAD_PLAYLIST_TRACKS:
+      newState.currentPlaylistName = action.data.playlistName;
+      newState.loadingPlaylistTracks = true;
+      newState.tracksError = null;
+      return newState;
+
+    case LOAD_PLAYLIST_TRACKS_SUCCESS:
+      newState.loadingPlaylistTracks = false;
+      newState.tracks = action.data.tracks;
+      newState.currentView = 'TRACKS';
+      return newState;
+
+    case LOAD_PLAYLIST_TRACKS_FAILURE:
+      newState.loadingPlaylistTracks = false;
+      newState.tracksError = action.data.tracksError;
+      return newState;
+
+    case BACK_TO_PLAYLISTS:
+      newState.currentView = 'PLAYLISTS';
       return newState;
 
     default:

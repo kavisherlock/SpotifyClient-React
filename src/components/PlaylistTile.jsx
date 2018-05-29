@@ -3,19 +3,19 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import MdPlaylistPlay from 'react-icons/lib/md/playlist-play';
 import MdPlayArrow from 'react-icons/lib/md/play-arrow';
+import MdStop from 'react-icons/lib/md/stop';
 import Button from './Button';
-import { loadPlaylistTracks, playPlaylistTracks } from '../redux/actions';
+import { loadPlaylistTracks, togglePlayPlaylist } from '../redux/actions';
 
 import styles from "../app.sass";
 
 const propTypes = {
   accessToken: PropTypes.string,
   userId: PropTypes.string,
-  playlistId: PropTypes.string,
-  name: PropTypes.string,
-  imageUrl: PropTypes.string,
+  playlist: PropTypes.object,
+  nowPlayingPlaylistId: PropTypes.string,
   _loadPlaylistTracks: PropTypes.func,
-  _playPlaylistTracks: PropTypes.func,
+  _togglePlayPlaylist: PropTypes.func,
 };
 
 class PlaylistTile extends React.Component {
@@ -40,13 +40,12 @@ class PlaylistTile extends React.Component {
 
   render() {
     const {
-      name,
-      imageUrl,
       accessToken,
       userId,
-      playlistId,
+      playlist,
+      nowPlayingPlaylistId,
       _loadPlaylistTracks,
-      _playPlaylistTracks,
+      _togglePlayPlaylist,
     } = this.props;
 
     let tileOverlay = null;
@@ -55,15 +54,15 @@ class PlaylistTile extends React.Component {
       imageClassNames = styles.transparentImage;
       tileOverlay = (
         <div className={styles.tileOverlay}>
-          <div className={styles.tileTitle}>{name}</div>
+          <div className={styles.tileTitle}>{playlist.name}</div>
           <div className={styles.tileButtons}>
             <Button
               icon={<MdPlaylistPlay size={32} style={{ paddingTop: '3px' }} />}
-              handleButtonClick={() => _loadPlaylistTracks(accessToken, userId, playlistId, name)}
+              handleButtonClick={() => _loadPlaylistTracks(accessToken, userId, playlist)}
             />
             <Button
-              icon={<MdPlayArrow size={32} />}
-              handleButtonClick={() => _playPlaylistTracks(accessToken, userId, playlistId)}
+              icon={nowPlayingPlaylistId !== playlist.id ? <MdPlayArrow size={32} /> : <MdStop size={32} />}
+              handleButtonClick={() => _togglePlayPlaylist(accessToken, userId, playlist, nowPlayingPlaylistId)}
             />
           </div>
         </div>
@@ -79,7 +78,7 @@ class PlaylistTile extends React.Component {
         <div>
           <img
             className={imageClassNames}
-            src={imageUrl}
+            src={playlist.images[0].url}
             alt="playlist-pic"
             width={250}
           />
@@ -95,11 +94,12 @@ PlaylistTile.propTypes = propTypes;
 const mapStateToProps = state => ({
   accessToken: state.accessToken,
   userId: state.userData.id,
+  nowPlayingPlaylistId: state.nowPlayingPlaylist.id,
 });
 
 const mapDispatchToProps = dispatch => ({
-  _loadPlaylistTracks: (accessToken, userId, playlistId, name) => { dispatch(loadPlaylistTracks(accessToken, userId, playlistId, name)); },
-  _playPlaylistTracks: (accessToken, userId, playlistId) => { dispatch(playPlaylistTracks(accessToken, userId, playlistId)) }
+  _loadPlaylistTracks: (accessToken, userId, playlist) => { dispatch(loadPlaylistTracks(accessToken, userId, playlist)); },
+  _togglePlayPlaylist: (accessToken, userId, playlist, nowPlayingPlaylistId) => { dispatch(togglePlayPlaylist(accessToken, userId, playlist, nowPlayingPlaylistId)) }
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PlaylistTile);

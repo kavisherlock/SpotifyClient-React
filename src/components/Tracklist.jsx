@@ -46,19 +46,11 @@ const Tracklist = (props) => {
 
   let songComponents = [];
   for (let i = 0; i < tracks.length; i++) {
-    let artists = tracks[i].track.artists[0].name;
-    for (let j = 1; j < tracks[i].track.artists.length; j++) {
-      artists = `${artists}, ${tracks[i].track.artists[j].name}`
-    }
-
     songComponents.push(
       <TracklistItem
         key={i}
         index={i + 1}
-        trackName={tracks[i].track.name}
-        artistName={artists}
-        albumName={tracks[i].track.album.name}
-        previewUrl={tracks[i].track.preview_url}
+        track={tracks[i].track}
       />
     );
   }
@@ -78,7 +70,7 @@ Tracklist.propTypes = propTypes;
 
 const mapStateToProps = state => ({
   loadingPlaylistTracks: state.loadingPlaylistTracks,
-  playlistName: state.currentPlaylistName,
+  playlistName: state.currentPlaylist.name,
   tracks: state.tracks,
 });
 

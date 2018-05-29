@@ -25,9 +25,7 @@ const PlaylistGrid = (props) => {
     playlistComponents.push(
       <PlaylistTile
         key={i}
-        playlistId={playlists[i].id}
-        name={playlists[i].name}
-        imageUrl={playlists[i].images[0].url}
+        playlist={playlists[i]}
       />
     );
   }

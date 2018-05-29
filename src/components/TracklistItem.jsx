@@ -1,21 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import MdPlayArrow from 'react-icons/lib/md/play-arrow';
+import MdStop from 'react-icons/lib/md/stop';
 import { connect } from 'react-redux';
 
-import { playTrack } from '../redux/actions';
+import { togglePlayTrack } from '../redux/actions';
 
 import styles from "../app.sass";
 
 const propTypes = {
-  accessToken: PropTypes.string,
-  trackId: PropTypes.string,
   index: PropTypes.number,
-  trackName: PropTypes.string,
-  albumName: PropTypes.string,
-  artistName: PropTypes.string,
-  previewUrl: PropTypes.string,
-  _playTrack: PropTypes.func,
+  track: PropTypes.object,
+  nowPlayingTrackId: PropTypes.string,
+  _togglePlayTrack: PropTypes.func,
 };
 
 class TracklistItem extends React.Component {
@@ -25,39 +22,35 @@ class TracklistItem extends React.Component {
     this.state = {
       hovering: false,
     }
-
-    this.playTrack = this.playTrack.bind(this);
-  }
-
-  playTrack() {
-    const {
-      index,
-      accessToken,
-      trackId,
-      previewUrl,
-      _playTrack,
-    } = this.props;
-
-    const audio = new Audio(previewUrl);
-    audio.play();
-    _playTrack(accessToken, index, trackId, previewUrl);
   }
 
   render() {
     const {
       index,
-      trackName,
-      artistName,
-      albumName,
+      track,
+      nowPlayingTrackId,
+      _togglePlayTrack,
     } = this.props;
 
     let leftIndex = index;
     if (this.state.hovering) {
       leftIndex = (
-        <div className={styles.playButton} onClick={this.playTrack}>
-          <MdPlayArrow size={24} />
+        <div
+          className={styles.playButton}
+          onClick={() => _togglePlayTrack(index)}
+        >
+          {
+            nowPlayingTrackId === track.id ?
+            <MdStop size={24} /> :
+            <MdPlayArrow size={24} />
+          }
         </div>
       );
+    }
+
+    let artists = track.artists[0].name;
+    for (let j = 1; j < track.artists.length; j++) {
+      artists = `${artists}, ${track.artists[j].name}`
     }
 
     return(
@@ -65,15 +58,15 @@ class TracklistItem extends React.Component {
         className={styles.tracklistItem}
         onMouseOver={() => this.setState({ hovering: true })}
         onMouseLeave={() => this.setState({ hovering: false })}
-        onDoubleClick={this.playTrack}
+        onDoubleClick={() => _togglePlayTrack(index)}
       >
         <div style={{ width: 20, height: 20 }}>
           {leftIndex}
         </div>
         <div className={styles.trackInfo}>
-          <div style={{ width: '35%' }}>{trackName}</div>
-          <div style={{ width: '35%' }}>{artistName}</div>
-          <div style={{ width: '30%' }}>{albumName}</div>
+          <div style={{ width: '35%' }}>{track.name}</div>
+          <div style={{ width: '35%' }}>{artists}</div>
+          <div style={{ width: '30%' }}>{track.album.name}</div>
         </div>
       </div>
     );
@@ -82,8 +75,12 @@ class TracklistItem extends React.Component {
 
 TracklistItem.propTypes = propTypes;
 
-const mapDispatchToProps = dispatch => ({
-  _playTrack: (accessToken, index, trackId, previewUrl) => { dispatch(playTrack(accessToken, index, trackId, previewUrl)) }
+const mapStateToProps = state => ({
+  nowPlayingTrackId: state.nowPlayingTrack.id
 });
 
-export default connect(null, mapDispatchToProps)(TracklistItem);
+const mapDispatchToProps = dispatch => ({
+  _togglePlayTrack: (index) => { dispatch(togglePlayTrack(index - 1)) }
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(TracklistItem);

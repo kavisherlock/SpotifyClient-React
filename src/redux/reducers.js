@@ -9,7 +9,11 @@ import {
   LOAD_PLAYLIST_TRACKS_SUCCESS,
   LOAD_PLAYLIST_TRACKS_FAILURE,
   BACK_TO_PLAYLISTS,
+  TOGGLE_PLAY_PLAYLIST,
+  TOGGLE_PLAY_TRACK,
 } from './actions';
+
+const blankId = { id: '' };
 
 const defaultState = {
   loggingIn: false,
@@ -22,9 +26,14 @@ const defaultState = {
   playlists: [],
   playlistsError: null,
   loadingPlaylistTracks: false,
-  currentPlaylistName: '',
+  currentPlaylist: null,
   tracks: [],
   tracksError: null,
+  lastPlayingTrack: null,
+  lastPlayingPlaylist: null,
+  nowPlayingPlaylist: blankId,
+  nowPlayingTrack: blankId,
+  audio: null,
 }
 
 const Reducers = (state = defaultState, action) => {
@@ -64,7 +73,7 @@ const Reducers = (state = defaultState, action) => {
       return newState;
 
     case LOAD_PLAYLIST_TRACKS:
-      newState.currentPlaylistName = action.data.playlistName;
+      newState.currentPlaylist = action.data.playlist;
       newState.loadingPlaylistTracks = true;
       newState.tracksError = null;
       return newState;
@@ -82,6 +91,45 @@ const Reducers = (state = defaultState, action) => {
 
     case BACK_TO_PLAYLISTS:
       newState.currentView = 'PLAYLISTS';
+      newState.currentPlaylist = null;
+      return newState;
+
+    case TOGGLE_PLAY_PLAYLIST:
+      if (state.audio) {
+        state.audio.pause();
+        if (newState.nowPlayingPlaylist.id === action.data.playlist.id) {
+          newState.lastPlayingTrack = Object.assign({}, state.nowPlayingTrack);
+          newState.lastPlayingPlaylist = Object.assign({}, state.nowPlayingPlaylist);
+          newState.nowPlayingTrack = blankId;
+          newState.nowPlayingPlaylist = blankId;
+          return newState;
+        }
+      }
+      newState.nowPlayingPlaylist = action.data.playlist;
+      return newState;
+
+    case TOGGLE_PLAY_TRACK:
+      let newTrack = action.data.track;
+      if (!newTrack) {
+        newTrack = state.tracks[action.data.trackIndex].track;
+      }
+      if (state.audio) {
+        state.audio.pause();
+        if (newState.nowPlayingTrack.id === newTrack.id) {
+          newState.lastPlayingTrack = Object.assign({}, state.nowPlayingTrack);
+          newState.lastPlayingPlaylist = Object.assign({}, state.nowPlayingPlaylist);
+          newState.nowPlayingTrack = blankId;
+          newState.nowPlayingPlaylist = blankId;
+          return newState;
+        }
+      }
+
+      if (state.currentPlaylist) {
+        newState.nowPlayingPlaylist = Object.assign({}, state.currentPlaylist);
+      }
+      newState.nowPlayingTrack = Object.assign({}, newTrack);
+      newState.audio = new Audio(newTrack.preview_url);
+      newState.audio.play();
       return newState;
 
     default:

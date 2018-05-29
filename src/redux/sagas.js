@@ -12,6 +12,8 @@ import {
   LOAD_PLAYLIST_TRACKS,
   LOAD_PLAYLIST_TRACKS_SUCCESS,
   LOAD_PLAYLIST_TRACKS_FAILURE,
+  TOGGLE_PLAY_PLAYLIST,
+  TOGGLE_PLAY_TRACK,
 } from './actions';
 
 function* fetchUser(action) {
@@ -37,10 +39,24 @@ function* fetchPlaylistTracks(action) {
     const tracks = yield call(Service.fetchPlaylistTracks,
       action.data.accessToken,
       action.data.userId,
-      action.data.playlistId);
+      action.data.playlist.id);
     yield put({ type: LOAD_PLAYLIST_TRACKS_SUCCESS, data: { tracks: tracks.items } });
   } catch (e) {
     yield put({ type: LOAD_PLAYLIST_TRACKS_FAILURE, data: { tracksError: e } });
+  }
+}
+
+function* togglePlayPlaylist(action) {
+  if (action.data.nowPlayingPlaylistId !== action.data.playlist.id) {
+    try {
+      const tracks = yield call(Service.fetchPlaylistTracks,
+        action.data.accessToken,
+        action.data.userId,
+        action.data.playlist.id);
+      yield put({ type: TOGGLE_PLAY_TRACK, data: { track: tracks.items[0].track } });
+    } catch (e) {
+      yield put({ type: LOAD_PLAYLIST_TRACKS_FAILURE, data: { tracksError: e } });
+    }
   }
 }
 
@@ -50,8 +66,9 @@ function* fetchSaga() {
     takeLatest(LOGIN_USER, fetchUser),
     takeLatest(LOAD_PLAYLISTS, fetchPlaylists),
     takeLatest(LOAD_PLAYLIST_TRACKS, fetchPlaylistTracks),
+    takeLatest(TOGGLE_PLAY_PLAYLIST, togglePlayPlaylist),
   ];
 }
 
-export { fetchUser, fetchPlaylists, fetchSaga };
+export { fetchUser, fetchPlaylists, fetchSaga, togglePlayPlaylist };
 export default [fetchSaga];

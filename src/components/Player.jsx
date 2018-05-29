@@ -14,6 +14,7 @@ const propTypes = {
   prop: PropTypes.object,
   lastPlayingTrack: PropTypes.object,
   nowPlayingTrack: PropTypes.object,
+  nowPlayingTrackIndex: PropTypes.number,
   _togglePlayTrack: PropTypes.func,
 };
 
@@ -21,6 +22,7 @@ const propTypes = {
 const Player = (props) => {
   const {
     nowPlayingTrack,
+    nowPlayingTrackIndex,
     lastPlayingTrack,
     _togglePlayTrack,
   } = props;
@@ -57,17 +59,17 @@ const Player = (props) => {
         <Button
           className={styles.circleButtons}
           icon={<MdFastRewind size={32} />}
-          handleButtonClick={() => _togglePlayTrack(track)}
+          handleButtonClick={() => _togglePlayTrack(nowPlayingTrackIndex - 1, null)}
         />
         <Button
           className={styles.circleButtons}
           icon={nowPlayingTrack.id.length === 0 ? <MdPlayArrow size={32} /> : <MdStop size={32} />}
-          handleButtonClick={() => _togglePlayTrack(track)}
+          handleButtonClick={() => _togglePlayTrack(null, track)}
         />
         <Button
           className={styles.circleButtons}
           icon={<MdFastForward size={32} />}
-          handleButtonClick={() => _togglePlayTrack(track)}
+          handleButtonClick={() => _togglePlayTrack(nowPlayingTrackIndex + 1, null)}
         />
       </div>
     </div>
@@ -78,11 +80,12 @@ Player.propTypes = propTypes;
 
 const mapStateToProps = state => ({
   nowPlayingTrack: state.nowPlayingTrack,
+  nowPlayingTrackIndex: state.nowPlayingTrackIndex,
   lastPlayingTrack: state.lastPlayingTrack,
 });
 
 const mapDispatchToProps = dispatch => ({
-  _togglePlayTrack: (track) => { dispatch(togglePlayTrack(0, track)) }
+  _togglePlayTrack: (trackIndex, track) => { dispatch(togglePlayTrack(trackIndex, track)) }
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Player);

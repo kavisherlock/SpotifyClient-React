@@ -33,6 +33,7 @@ const defaultState = {
   lastPlayingPlaylist: null,
   nowPlayingPlaylist: blankId,
   nowPlayingTrack: blankId,
+  nowPlayingTrackIndex: -1,
   audio: null,
 }
 
@@ -95,6 +96,7 @@ const Reducers = (state = defaultState, action) => {
       return newState;
 
     case TOGGLE_PLAY_PLAYLIST:
+      newState.nowPlayingTrackIndex = 0;
       if (state.audio) {
         state.audio.pause();
         if (newState.nowPlayingPlaylist.id === action.data.playlist.id) {
@@ -110,6 +112,7 @@ const Reducers = (state = defaultState, action) => {
 
     case TOGGLE_PLAY_TRACK:
       let newTrack = action.data.track;
+      newState.nowPlayingTrackIndex = action.data.trackIndex;
       if (!newTrack) {
         newTrack = state.tracks[action.data.trackIndex].track;
       }

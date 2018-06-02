@@ -26,7 +26,7 @@
       font-size: 25px
       font-weight: bolder
 
-  .player
+  .playerContainer
     position: fixed
     left: 0
     bottom: 0
@@ -43,17 +43,18 @@
       display: flex
       flex-direction: row
       align-items: center
-      justify-content: center
-      margin-left: 37%
+      justify-content: space-between
+      width: 15%
+      margin-left: 41%
       position: fixed
 
-    .trackInfo
+    .player
       display: flex
       flex-direction: row
       font-weight: bold
       align-items: center
 
-      div
+      .trackInfo
         width: 100%
         padding: 5px 10px
 
@@ -80,8 +81,12 @@
 
       .transparentImage
         opacity: 0.2
+        transition: opacity 0.33s ease-in-out
+        -moz-transition: opacity 0.33s ease-in-out
+        -webkit-transition: opacity 0.33s ease-in-out
 
       .tileOverlay
+        opacity: 0
         top: 0
         left: 0
         display: flex
@@ -93,6 +98,11 @@
         height: 250px
         padding: 10px
         position: absolute
+        &:hover
+          opacity: 1
+          transition: opacity 0.33s ease-in-out
+          -moz-transition: opacity 0.33s ease-in-out
+          -webkit-transition: opacity 0.33s ease-in-out
 
         .tileTitle
           font-size: 20px
@@ -124,6 +134,9 @@
         &:hover
           background: #f2ecec
           cursor: default
+          transition: background 0.33s ease-in-out
+          -moz-transition: background 0.33s ease-in-out
+          -webkit-transition: background 0.33s ease-in-out
 
         .playButton:hover
           cursor: pointer
@@ -161,3 +174,6 @@
     &:hover
       background: #fbf0f0
       cursor: pointer
+      transition: background 0.33s ease-in-out
+      -moz-transition: background 0.33s ease-in-out
+      -webkit-transition: background 0.33s ease-in-out

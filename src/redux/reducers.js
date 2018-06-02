@@ -113,8 +113,11 @@ const Reducers = (state = defaultState, action) => {
     case TOGGLE_PLAY_TRACK:
       let newTrack = action.data.track;
       newState.nowPlayingTrackIndex = action.data.trackIndex;
+      if (action.data.tracks) {
+        newState.tracks = action.data.tracks;
+      }
       if (!newTrack) {
-        newTrack = state.tracks[action.data.trackIndex].track;
+        newTrack = newState.tracks[action.data.trackIndex].track;
       }
       if (state.audio) {
         state.audio.pause();

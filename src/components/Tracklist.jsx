@@ -2,10 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import MdArrowBack from 'react-icons/lib/md/arrow-back';
-import Button from './Button';
-import { backToPlaylists } from '../redux/actions';
 
+import { backToPlaylists } from '../redux/actions';
 import TracklistItem from './TracklistItem'
+import Button from './Button';
 import styles from "../app.sass";
 
 const propTypes = {
@@ -28,6 +28,7 @@ const Tracklist = (props) => {
       <Button
         width={56}
         height={24}
+        margin={20}
         icon={<MdArrowBack size={14}/>}
         text="Back"
         handleButtonClick={() => _backToPlaylists()}
@@ -70,7 +71,7 @@ Tracklist.propTypes = propTypes;
 
 const mapStateToProps = state => ({
   loadingPlaylistTracks: state.loadingPlaylistTracks,
-  playlistName: state.currentPlaylist.name,
+  playlistName: state.currentPlaylist ? state.currentPlaylist.name : '',
   tracks: state.tracks,
 });
 

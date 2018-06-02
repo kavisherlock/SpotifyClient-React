@@ -16,7 +16,7 @@ const defaultProps = {
   icon: null,
   width: 50,
   height: 50,
-  margin: 20,
+  margin: 0,
 };
 
 const Button = (props) => {

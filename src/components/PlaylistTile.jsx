@@ -50,17 +50,19 @@ class PlaylistTile extends React.Component {
 
     let tileOverlay = null;
     let imageClassNames = null;
-    if (this.state.hovering) {
+    if (this.state.hovering || nowPlayingPlaylistId === playlist.id) {
       imageClassNames = styles.transparentImage;
       tileOverlay = (
-        <div className={styles.tileOverlay}>
+        <div className={styles.tileOverlay} style={nowPlayingPlaylistId === playlist.id ? { opacity: 1 } : null}>
           <div className={styles.tileTitle}>{playlist.name}</div>
           <div className={styles.tileButtons}>
             <Button
+              margin={20}
               icon={<MdPlaylistPlay size={32} style={{ paddingTop: '3px' }} />}
               handleButtonClick={() => _loadPlaylistTracks(accessToken, userId, playlist)}
             />
             <Button
+              margin={20}
               icon={nowPlayingPlaylistId !== playlist.id ? <MdPlayArrow size={32} /> : <MdStop size={32} />}
               handleButtonClick={() => _togglePlayPlaylist(accessToken, userId, playlist, nowPlayingPlaylistId)}
             />

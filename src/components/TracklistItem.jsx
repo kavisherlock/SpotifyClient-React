@@ -32,7 +32,7 @@ class TracklistItem extends React.Component {
       _togglePlayTrack,
     } = this.props;
 
-    let leftIndex = index;
+    let leftIndex = nowPlayingTrackId === track.id ? <MdStop size={24} /> : index;
     if (this.state.hovering) {
       leftIndex = (
         <div
@@ -56,6 +56,7 @@ class TracklistItem extends React.Component {
     return(
       <div
         className={styles.tracklistItem}
+        style={nowPlayingTrackId === track.id ? { backgroundColor: '#eee6e6' } : null}
         onMouseOver={() => this.setState({ hovering: true })}
         onMouseLeave={() => this.setState({ hovering: false })}
         onDoubleClick={() => _togglePlayTrack(index)}

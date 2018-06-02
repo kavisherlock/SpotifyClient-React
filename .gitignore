@@ -32,3 +32,5 @@ node_modules
 # Ignore build files
 public
 .idea
+yarn.lock
+package-lock.json

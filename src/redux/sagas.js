@@ -53,7 +53,7 @@ function* togglePlayPlaylist(action) {
         action.data.accessToken,
         action.data.userId,
         action.data.playlist.id);
-      yield put({ type: TOGGLE_PLAY_TRACK, data: { trackIndex: 0, track: tracks.items[0].track } });
+      yield put({ type: TOGGLE_PLAY_TRACK, data: { tracks: tracks.items, trackIndex: 0, track: tracks.items[0].track } });
     } catch (e) {
       yield put({ type: LOAD_PLAYLIST_TRACKS_FAILURE, data: { tracksError: e } });
     }

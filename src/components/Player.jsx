@@ -5,6 +5,7 @@ import MdStop from 'react-icons/lib/md/stop';
 import MdFastRewind from 'react-icons/lib/md/fast-rewind';
 import MdFastForward from 'react-icons/lib/md/fast-forward';
 import { connect } from 'react-redux';
+import { VelocityTransitionGroup } from 'velocity-react';
 
 import Button from './Button';
 import styles from "../app.sass";
@@ -42,41 +43,65 @@ const Player = (props) => {
   }
 
   return(
-    <div className={styles.player}>
-      <div className={styles.trackInfo}>
+    <div className={styles.playerContainer}>
+      <div className={styles.player}>
         <img
           src={track.album.images[0].url}
           alt="playlist-pic"
           width={100}
         />
         <div>
-          <div>{track.name}</div>
-          <div>{artists}</div>
-          <div>{track.album.name}</div>
+          <div className={styles.trackInfo}>{track.name}</div>
+          <div className={styles.trackInfo}>{artists}</div>
+          <div className={styles.trackInfo}>{track.album.name}</div>
         </div>
-      </div>
-      <div className={styles.buttons}>
-        <Button
-          className={styles.circleButtons}
-          icon={<MdFastRewind size={32} />}
-          handleButtonClick={() => _togglePlayTrack(nowPlayingTrackIndex - 1, null)}
-        />
-        <Button
-          className={styles.circleButtons}
-          icon={nowPlayingTrack.id.length === 0 ? <MdPlayArrow size={32} /> : <MdStop size={32} />}
-          handleButtonClick={() => _togglePlayTrack(null, track)}
-        />
-        <Button
-          className={styles.circleButtons}
-          icon={<MdFastForward size={32} />}
-          handleButtonClick={() => _togglePlayTrack(nowPlayingTrackIndex + 1, null)}
-        />
+
+        <div className={styles.buttons}>
+          <Button
+            className={styles.circleButtons}
+            icon={<MdFastRewind size={32} />}
+            handleButtonClick={() => _togglePlayTrack(nowPlayingTrackIndex - 1, null)}
+          />
+          <Button
+            className={styles.circleButtons}
+            icon={nowPlayingTrack.id.length === 0 ? <MdPlayArrow size={32} /> : <MdStop size={32} />}
+            handleButtonClick={() => _togglePlayTrack(null, track)}
+          />
+          <Button
+            className={styles.circleButtons}
+            icon={<MdFastForward size={32} />}
+            handleButtonClick={() => _togglePlayTrack(nowPlayingTrackIndex + 1, null)}
+          />
+        </div>
       </div>
     </div>
   );
 };
 
+const AnimatedPlayer = (props) => {
+  const {
+    nowPlayingTrack,
+    lastPlayingTrack,
+  } = props;
+
+  let displayPlayer = true;
+  if (nowPlayingTrack.id.length === 0 && (!lastPlayingTrack || lastPlayingTrack.id.length === 0)) {
+    displayPlayer = false;
+  }
+
+
+  return (
+    <VelocityTransitionGroup
+      enter={{ animation: 'slideDown', duration: '500' }}
+      leave={{ animation: 'slideUp', duration: '500' }}
+    >
+      {displayPlayer ? <Player {...props} /> : null}
+    </VelocityTransitionGroup>
+  );
+}
+
 Player.propTypes = propTypes;
+AnimatedPlayer.propTypes = propTypes;
 
 const mapStateToProps = state => ({
   nowPlayingTrack: state.nowPlayingTrack,
@@ -88,4 +113,4 @@ const mapDispatchToProps = dispatch => ({
   _togglePlayTrack: (trackIndex, track) => { dispatch(togglePlayTrack(trackIndex, track)) }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Player);
+export default connect(mapStateToProps, mapDispatchToProps)(AnimatedPlayer);

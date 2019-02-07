@@ -1,40 +1,35 @@
 
-<p align="center">
-    <h3 align="center">Simple React Webpack Babel Starter Kit<br></h3>
-</p>
+## Spotify Client
 
-[![CircleCI](https://circleci.com/gh/ReactJSResources/react-webpack-babel/tree/master.svg?style=svg)](https://circleci.com/gh/ReactJSResources/react-webpack-babel/tree/master)
+A simple Spotify client using React.js. Used as a demo for my "When The Browser Reacts To You" introductory React talk in DevCon 2018 at Cerner Corporation.
 
-[![Dependency Status](https://img.shields.io/david/ReactJSResources/react-webpack-babel.svg)](https://david-dm.org/dylang/npm-check)
+Uses the Spotify API to get the logged-in user's playlists and displays them in a tiled format using the **PlaylistGrid** and **PlaylistTile** components.
 
-Tired of complicated starters with 200MB of dependencies which are hard to understand and modify? This is for you!
+The user can open a playlist which displays the tracks in that playlist using the **Tracklist** and the **TracklistItem**.
 
-### What were using
+The User can play one of these tracks from here (note: the API oonly allows for 30 second samples). The user can also play the entire playlist directly from the grid. The **Player** component at the bottom allows the user to go to the next and previous song.
 
-* React 16
-* Webpack 3
-* React Router 4
-* SASS
-* Babel Cli
-* Hot Module Reloading
-* Jest 21 
-* Enzyme 3 for testing
+Uses Redux to manage the internal state.
 
-### Features
+### Future functionality:
+* Searching for and playing tracks
+* Adding and Removing tracks to/from a playlist
+* Creating a new playlist
+* React Router to directly go to a playlist
+* Wicked animations
 
-* Simple src/index.jsx and src/index.css (local module css).
-* Webpack configuration for development (with hot reloading) and production (with minification).
-* CSS module loading, so you can include your css by ```import styles from './path/to.css';```.
-* Both js(x) and css hot loaded during development.
-* [Webpack Dashboard Plugin](https://github.com/FormidableLabs/webpack-dashboard) on dev server.
+<hr>
+
+Used the <a href="https://github.com/ReactJSResources/react-webpack-babel">Simple React Webpack Babel Starter Kit</a> to quickly set things up
+
 
 ### To run
 
 * You'll need to have [git](https://git-scm.com/) and [node](https://nodejs.org/en/) installed in your system.
-* Fork and clone the project:
+* Clone the project:
 
 ```
-git clone https://github.com/ReactJSResources/react-webpack-babel.git
+git clone https://github.com/kavisherlock/SpotifyClient-React
 ```
 
 * Then install the dependencies:
@@ -57,20 +52,6 @@ npm run dev
 
 Open the web browser to `http://localhost:8888/`
 
-### To test
-To run unit tests:
-
-```
-npm test
-```
-
-Tests come bundled with:
-
-* Jest
-* Enzyme
-* React Test Utils
-* React Test Renderer
-
 ### To build the production package
 
 ```
@@ -82,47 +63,3 @@ npm run build
 ```
 npm run serve:build
 ```
-
-### Nginx Config
-
-Here is an example Nginx config:
-
-```
-server {
-	# ... root and other options
-
-	gzip on;
-	gzip_http_version 1.1;
-	gzip_types text/plain text/css text/xml application/javascript image/svg+xml;
-
-	location / {
-		try_files $uri $uri/ /index.html;
-	}
-
-	location ~ \.html?$ {
-		expires 1d;
-	}
-
-	location ~ \.(svg|ttf|js|css|svgz|eot|otf|woff|jpg|jpeg|gif|png|ico)$ {
-		access_log off;
-		log_not_found off;
-		expires max;
-	}
-}
-```
-
-### Eslint
-There is a `.eslint.yaml` config for eslint ready with React plugin.
-
-To run linting, run:
-
-```
-npm run lint
-```
-
-### Notes on importing css styles
-* styles having /src/ in their absolute path considered part of the application and exported as local css modules.
-* other styles considered global styles used by components and included in the css bundle directly.
-
-### Contribute
-Please contribute to the project if you know how to make it better, including this README :)
